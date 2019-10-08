@@ -27,34 +27,39 @@ sub fzindex (   Str $haystack,
     # prerequisites that we may never need.
     #-------------------------------------------------------------------------------
     my @R;
-    sub perfect_match {
+
+    sub perfect_match (--> Int:D) {
         #-------------------------------------------------------------------------------
-        # Use the 'index' built-in, which is much faster than our fuzzy sw-alignment, to
-        # quickly test for perfect occurrences of the needle in the haystack. If any are
+        # Use the 'indices' built-in, which is much faster than our fuzzy sw-alignment,
+        # to quickly test for perfect occurrences of the needle in the haystack. If any are
         # identified, build the results array @R in the same way as for a fuzzy match.
         #-------------------------------------------------------------------------------
-        my @start_pos;
-        my $start_pos = 0;
+        @R=();
+        unless $haystack.chars == 0 || $needle.chars == 0 {
 
-        while $start_pos = index($haystack, $needle, $start_pos) {
-            @start_pos.push: $start_pos++;
-        }
+            my $spos;
+            my $nlen  = $needle.chars;
+            my $frac  = 1/1;
+            my $s1sp;
+            my $s1ep;
+            my $s2sp  = 0;
+            my $s2ep  = $nlen-1;
+            my @tb_s1 = $needle.comb;
+            my @tb_s2 = @tb_s1;
+            my @tb_sc;
 
-        for 0..(@start_pos.end) -> $i {
-            $start_pos  = @start_pos[$i];
-            my $nlen    = $needle.chars;
-            my $frac    = 1/1;
-            my $s1sp    = $start_pos;
-            my $s1ep    = $start_pos + $nlen-1;
-            my $s2sp    = 0;
-            my $s2ep    = $nlen-1;
-            my @tb_s1   = $needle.comb;
-            my @tb_s2   = @tb_s1;
-            my @tb_sc   = $s_id, { $_ + $s_id } ... ($nlen * $s_id);
-            @R[$i]      = ($frac, $s1sp, $s1ep, $s2sp, $s2ep, @tb_s1.List, @tb_s2.List, @tb_sc.List);
+            my @start_pos = indices($haystack, $needle, :overlap);
+            for 0..(@start_pos.end) -> $i {
+                $spos  = @start_pos[$i];
+                $s1sp  = $spos;
+                $s1ep  = $spos + $nlen-1;
+                @tb_sc = $s_id, { $_ + $s_id } ... ($nlen * $s_id);
+                @R[$i] = ($frac<>, $s1sp<>, $s1ep<>, $s2sp<>, $s2ep<>, @tb_s1.List, @tb_s2.List, @tb_sc.List);
+            }
         }
-        return @start_pos.elems;
+        return @R.elems;
     }
+
 
     unless perfect_match() {
         #-------------------------------------------------------------------------------
@@ -214,7 +219,7 @@ sub fzindex (   Str $haystack,
                 my $s2sp = @tb_orig[1]-1;
                 my $s2ep = @h[1]-1;
 
-                @R[$i-1] = ($frac, $s1sp, $s1ep, $s2sp, $s2ep,
+                @R[$i-1] = ($frac<>, $s1sp<>, $s1ep<>, $s2sp<>, $s2ep<>,
                         @tb_s1.reverse.List, @tb_s2.reverse.List, @tb_sc.reverse.List);
             }
         }

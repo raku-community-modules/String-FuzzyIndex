@@ -1,9 +1,12 @@
 {
   "name": "String::FuzzyIndex",
   "description": "Fuzzy index routine based on Smith-Waterman algorithm",
-  "version": "0.1",
+  "version": "0.2",
   "perl": "6.d",
-  "auth": "threadless-screw",
+  "authors": [
+    "threadless-screw"
+  ],
+  "auth": "github:threadless-screw",
   "depends": [],
   "build-depends": [],
   "test-depends": [],
@@ -19,5 +22,5 @@
     "fzindex",
     "smith-waterman"
   ],
-  "source-url": "https://github.com/threadless-screw/String-FuzzyIndex"
+  "source-url": "https://github.com/threadless-screw/String-FuzzyIndex.git"
 }

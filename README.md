@@ -1,8 +1,8 @@
-# NAME
+# Name
 `String::FuzzyIndex` is a pure Perl 6 module for fuzzy string matching based on
 the [Smith-Waterman algorithm](https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm).
 
-# SYNOPSIS
+# Synopsis
     use String::FuzzyIndex;
 
     my @fzmatch = fzindex($haystack, $needle);
@@ -11,12 +11,15 @@ the [Smith-Waterman algorithm](https://en.wikipedia.org/wiki/Smith%E2%80%93Water
     my @fzmatch = fzindex($haystack, $needle, :ignore_diacritics);
     my @fzmatch = fzindex($haystack, $needle, :glossover_ocrerrors);
 
-# DESCRIPTION
-`String::FuzzyIndex` locates the best match(es) of a needle string in a haystack
-string and returns the best-match data in the form of a `List`. In case no best
-match was found, the `List` is empty. Otherwise the returned `List` contains,
-for each best match, an eight-element sub-`List` describing that match. The
-structure of a sub-`List` is as follows:
+# Subroutines
+`String::FuzzyIndex` provides a single subroutine named `fzindex`.
+
+# Description
+The subroutine `fzindex` locates the best match(es) of a needle string in a
+haystack string and returns the best-match data in the form of a `List`. In case
+no best match was found, the `List` is empty. Otherwise the returned `List`
+contains, for each best match, an eight-element sub-`List` describing that
+match. The structure of a sub-`List` is as follows:
 
 | Index |  Type     | Description                                                 |
 |:------|:----------|:------------------------------------------------------------|
@@ -30,7 +33,7 @@ structure of a sub-`List` is as follows:
 | 7     | List[Int] | Traceback buffer comprising the match's similarity scores   |
 
 ## Similarity scoring scheme
-`String::FuzzyIndex` is based on the [Smith-Waterman
+The operation of `fzindex` is based on the [Smith-Waterman
 algorithm](https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm). This
 algorithm is used to identify the best match(es) by performing so-called 'local
 sequence alignment', i.e. by comparing segments of the haystack and the needle
@@ -45,8 +48,8 @@ unless the options `:ignore_diacritics` and/or `:glossover_ocrerrors` are used
 
 The alignment of haystack and needle segments may also call for the
 acknowledgement of gaps: positions in an aligned segment that correspond to
-neither identical nor non-identical elements. `String::FuzzyIndex` implements a
-linear gap penalty scheme according to which each such gap is assigned a gap
+neither identical nor non-identical elements. To this end, `fzindex` implements
+a linear gap penalty scheme according to which each such gap is assigned a gap
 penalty `s_gap`. In the traceback buffers reported for a match, gaps are denoted
 with a dash ('-').
 
@@ -54,8 +57,7 @@ When working with strings extracted from OCRed data, mismatches in the alignment
 of segments may arise from the improper recognition of diacritics and/or the
 mixup of two characters. A 'ç' may, for instance, have been recognized as a 'c'
 and so frustrate alignment. Similarly, an 'I' is commonly OCRed as an 'l', or an
-'|'. `String:FuzzyIndex` offers two options to help mitigate such OCR-related
-issues:
+'|'. `fzindex` offers two options to help mitigate such OCR-related issues:
 
 * The option `:ignore_diacritics` causes diacritics to be ignored in assessing
   whether two characters are identical. Hence, the pairwise comparison of 'ç'
@@ -84,13 +86,14 @@ OCR error or the like that caused `index` to report the absence of the needle
 from the haystack. In such a case, `fzindex` may be used as a backup for `index`.
 
 However, since `index` is comparably fast, `fzindex` internally executes an
-`index`-based match attempt before starting a local sequence alignment attempt.
-Because of this, there is generally no need to implement the use of `fzindex` as
-an actual backup to the use of the `index` built-in. Instead, the `fzindez`
-routine may be used instead of the built-in `index`. Such use of `fzindex`
-obviously comes at a performance penalty, but has the advantages that (i) all
-perfect matches are reported at once, and (ii) any best fuzzy matches are
-reported in case no perfect matches exist.
+`index`-based (actually: `indices`-based) match attempt before starting a local
+sequence alignment attempt. Because of this, there is generally no need to
+implement the use of `fzindex` as an actual backup to the use of the `index`
+built-in. Instead, the `fzindex` routine may be used instead of the built-in
+`index`. Such use of `fzindex` obviously comes at a performance penalty, but has
+the advantages that (i) all perfect matches are reported at once, and (ii) any
+best fuzzy matches are reported in case no perfect matches exist.
+
 
 ## Optimization
 The Perl 6 implementation of the Smith-Waterman algorithm is naturally
@@ -133,10 +136,17 @@ OUTPUT:
     Haystack traceback buffer : (s q u e e k y   w - e e l)
     Needle traceback buffer   : (s q u e a k y   w h e e l)
 
-## License
-`String::FuzzyIndex` is free and opensource software. You may redistribute
+# Revision History
+
+* v0.2 (09.09.2019)
+  - Performance improvement in perfect_match routine
+* v0.1 (07.09.2019)
+  - Initial release
+
+# License
+`String::FuzzyIndex` is free and open source software. You may redistribute
 it and/or modify it under the terms of the Artistic License 2.0.
 
-## Contact
+# Contact
 Bug reports and suggestions are welcome, and may be reported via the GitHub
-project page.
+project page: https://github.com/threadless-screw/String-FuzzyIndex.
