@@ -1,0 +1,10 @@
+Revision history for String::FuzzyIndex
+
+{{$NEXT}}
+    - Initial version as a Raku Community module
+
+v0.2 (09.09.2019)
+    - Performance improvement in perfect_match routine
+
+v0.1 (07.09.2019)
+    - Initial release

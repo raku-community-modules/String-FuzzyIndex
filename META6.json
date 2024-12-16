@@ -1,20 +1,22 @@
 {
-  "name": "String::FuzzyIndex",
-  "description": "Fuzzy index routine based on Smith-Waterman algorithm",
-  "version": "0.2",
-  "perl": "6.d",
+  "auth": "zef:raku-community-modules",
   "authors": [
     "threadless-screw"
   ],
-  "auth": "github:threadless-screw",
-  "depends": [],
-  "build-depends": [],
-  "test-depends": [],
-  "provides": {
-    "String::FuzzyIndex": "lib/String/FuzzyIndex.pm6"
-  },
-  "resources": [],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Fuzzy index routine based on Smith-Waterman algorithm",
   "license": "Artistic-2.0",
+  "name": "String::FuzzyIndex",
+  "perl": "6.d",
+  "provides": {
+    "String::FuzzyIndex": "lib/String/FuzzyIndex.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "https://github.com/raku-community-modules/String-FuzzyIndex.git",
   "tags": [
     "string",
     "fuzzy",
@@ -22,5 +24,7 @@
     "fzindex",
     "smith-waterman"
   ],
-  "source-url": "https://github.com/threadless-screw/String-FuzzyIndex.git"
+  "test-depends": [
+  ],
+  "version": "0.2"
 }

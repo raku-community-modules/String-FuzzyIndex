@@ -1,4 +1,3 @@
-use lib 'lib';
 use String::FuzzyIndex;
 use Test;
 
@@ -58,3 +57,5 @@ ok( fzindex($haystack3, $needle4, :s_id(5), :s_nid(-1), :s_gap(-1)) eqv $R4, 'No
 ok( fzindex($haystack3, $needle5, :s_id(5), :s_nid(-1), :s_gap(-1)) eqv $R5, 'Multiple perfect matches' );
 ok( fzindex($haystack6, $needle6, :ignore_diacritics)[0;0] eqv $R6, 'Ignore diacritics' );
 ok( fzindex($haystack7, $needle7, :s_id(6), :s_ocr(3), :glossover_ocrerrors)[0;0] eqv $R7, 'Gloss over OCR errors' );
+
+# vim: expandtab shiftwidth=4
